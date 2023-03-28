@@ -1,4 +1,3 @@
-const path = require("path");
 const calculateData = require("../../server/Services/calculator");
 const {
   MONTHLYINVESTMENTMAX,

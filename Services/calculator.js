@@ -1,9 +1,8 @@
 const calculateData = async (monthlyInvestment,investmentPeriod,rateOfReturn,yearlyIncrement) => {
-  
   try {
     const graph = [];
     let totalInvestmentTillDate, sip;
-    for (let year = 1; year <= investmentPeriod; year++) {
+    for (let year = 0; year <= investmentPeriod; year++) {
       let monthlyInvestmentCopy = monthlyInvestment 
       let totalSipWithStepUp = 0, cummulationAmount = 0, totalInvestmentAmount = 0;
       let Ror = rateOfReturn / 1200;
