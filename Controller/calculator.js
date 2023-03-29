@@ -1,4 +1,5 @@
-const calculateData = require("../../server/Services/calculator");
+
+const calculateData = require("../../InvestLogic/Services/calculator");
 const {
   MONTHLYINVESTMENTMAX,
   MONTHLYINVESTMENTMIN,
@@ -8,14 +9,17 @@ const {
   RATEOFRETURNMAX,
   YEARLYINCREMENTMIN,
   YEARLYINCREMENTMAX,
-} = require("../../server/Constants/validation");
+} = require("../../InvestLogic/Constants/validation");
 
 const controlData = async (req, res) => {
   try {
+    
+
     const monthlyInvestment = parseInt(req.query.monthlyInvestment);
     const investmentPeriod = parseInt(req.query.investmentPeriod);
     const rateOfReturn = parseFloat(req.query.rateOfReturn);
     const yearlyIncrement = parseInt(req.query.yearlyIncrement);
+
     if ( 
       monthlyInvestment < MONTHLYINVESTMENTMIN ||
       monthlyInvestment > MONTHLYINVESTMENTMAX ||
