@@ -48,7 +48,7 @@ const controlData = async (req, res) => {
     res.send({
       status: -1,
       message: "Invalid inputs",
-      result: error,
+      result: error.message,
     });
   }
 };

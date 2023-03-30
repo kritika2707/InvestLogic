@@ -12,9 +12,9 @@ const calculateData = async (
       let totalSipWithStepUp = 0,
         cummulationAmount = 0,
         totalInvestmentAmount = 0;
-      let Ror = rateOfReturn / 1200;
-      let PeriodInMonth = year * 12;
-      for (let i = 1; i <= PeriodInMonth; i++) {
+      let ror = rateOfReturn / 1200;
+      let periodInMonth = year * 12;
+      for (let i = 1; i <= periodInMonth; i++) {
         if (i !== 1) {
           if (i % 12 == 1) {
             monthlyInvestmentCopy =
@@ -22,8 +22,7 @@ const calculateData = async (
               monthlyInvestmentCopy * (yearlyIncrement / 100);
           }
         }
-        cummulationAmount =
-          monthlyInvestmentCopy * Math.pow(1 + Ror, PeriodInMonth - i + 1);
+        cummulationAmount = monthlyInvestmentCopy * Math.pow(1 + ror, periodInMonth - i + 1);
         totalSipWithStepUp += cummulationAmount;
         totalInvestmentAmount += monthlyInvestmentCopy;
 
@@ -34,9 +33,9 @@ const calculateData = async (
         years: year,
         sipStepUp: Math.round(totalSipWithStepUp).toFixed(0),
         investment: Math.round(totalInvestmentAmount).toFixed(0),
-      };
+      }
       graph.push(obj);
-    }
+    };
     capital = sip - totalInvestmentTillDate;
     const graphResult = {
       graph,
@@ -46,7 +45,7 @@ const calculateData = async (
     };
     return graphResult;
   } catch (error) {
-    res.send(error);
+    return error.message;
   }
 };
 
