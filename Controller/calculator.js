@@ -1,7 +1,6 @@
 const services = require("../Services/calculator")
 const { constants }  = require("../Constants/validation")
 
-
 const getStepUpCalculator = async (req, res) => {
   try {
    let { monthlyInvestment, investmentPeriod, rateOfReturn, yearlyIncrement } = req.query

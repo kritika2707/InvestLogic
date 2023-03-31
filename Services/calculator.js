@@ -16,17 +16,17 @@ const getStepUpCalculator = async ( { monthlyInvestment, investmentPeriod, rateO
       var totalSipWithStepUp = 0, cummulationAmount = 0, totalInvestmentAmount = 0
       let periodInMonth = year * constants.MONTHSINAYEAR
       // for loop for calculating values till periodInMonth
-      for (let i = 1; i <= periodInMonth; i++) {
+      for (let month = 1; month <= periodInMonth; month++) {
         // increment will not be performed for 1st year
-        if (i !== 1) {
+        if (month !== 1) {
           // increment calculation for next year
-          if (i % constants.MONTHSINAYEAR == 1) {
+          if (month % constants.MONTHSINAYEAR == 1) {
             // adding increment to monthly investment in the starting of every year
             monthlyInvestmentCopy += monthlyInvestmentCopy * (yearlyIncrement / constants.PERCENTAGE)
           }
         }
         // calculating compound interest
-        cummulationAmount = monthlyInvestmentCopy * Math.pow(1 + ror, periodInMonth - i + 1)
+        cummulationAmount = monthlyInvestmentCopy * Math.pow(1 + ror, periodInMonth - month + 1)
         // calculating sip growth with yearly increment
         totalSipWithStepUp += cummulationAmount
         // calculating total investment till that month  
@@ -48,8 +48,6 @@ const getStepUpCalculator = async ( { monthlyInvestment, investmentPeriod, rateO
       totalInvestmentAmount:Math.round(totalInvestmentAmount),
       capitalGain:Math.round(totalSipWithStepUp-totalInvestmentAmount)
     }
-
-    console.log(graphResult)
     return graphResult
   } catch (error) {
     throw error
