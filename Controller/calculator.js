@@ -31,7 +31,7 @@ const getStepUpCalculator = async (req, res) => {
   } catch (error) {
     res.send({
       status: -1,
-      message: "Invalid inputs",
+      message: error,
       result: error
     })
   }
