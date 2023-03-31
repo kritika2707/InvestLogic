@@ -1,52 +1,55 @@
-const calculateData = async (
-  monthlyInvestment,
-  investmentPeriod,
-  rateOfReturn,
-  yearlyIncrement
-) => {
+const { constants } = require('../Constants/validation')
+const getStepUpCalculator = async ( { monthlyInvestment, investmentPeriod, rateOfReturn, yearlyIncrement}) => {
   try {
-    const graph = [];
-    let totalInvestmentTillDate, sip, capital;
-    for (let year = 0; year <= investmentPeriod; year++) {
+    const graph = [
+      //Initial values for plotting graph
+      {
+        currentYear:0,        
+        sipStepUp:0, 
+        investment:0
+      }
+    ]
+    let ror = rateOfReturn / (constants.MONTHSINAYEAR * constants.PERCENTAGE)
+    // for loop for calculating values for every year
+    for (let year = 1; year <= investmentPeriod; year++) {
       let monthlyInvestmentCopy = monthlyInvestment;
-      let totalSipWithStepUp = 0,
-        cummulationAmount = 0,
-        totalInvestmentAmount = 0;
-      let ror = rateOfReturn / 1200;
-      let periodInMonth = year * 12;
+      var totalSipWithStepUp = 0, cummulationAmount = 0, totalInvestmentAmount = 0
+      let periodInMonth = year * constants.MONTHSINAYEAR
+      // for loop for calculating values till periodInMonth
       for (let i = 1; i <= periodInMonth; i++) {
+        // increment will not be performed for 1st year
         if (i !== 1) {
-          if (i % 12 == 1) {
-            monthlyInvestmentCopy =
-              monthlyInvestmentCopy +
-              monthlyInvestmentCopy * (yearlyIncrement / 100);
+          // increment calculation for next year
+          if (i % constants.MONTHSINAYEAR == 1) {
+            monthlyInvestmentCopy += monthlyInvestmentCopy * (yearlyIncrement / constants.PERCENTAGE)
           }
         }
-        cummulationAmount = monthlyInvestmentCopy * Math.pow(1 + ror, periodInMonth - i + 1);
-        totalSipWithStepUp += cummulationAmount;
-        totalInvestmentAmount += monthlyInvestmentCopy;
-
-        totalInvestmentTillDate = totalInvestmentAmount.toFixed(0);
-        sip = totalSipWithStepUp.toFixed(0);
+        cummulationAmount = monthlyInvestmentCopy * Math.pow(1 + ror, periodInMonth - i + 1)
+        totalSipWithStepUp += cummulationAmount
+        totalInvestmentAmount += monthlyInvestmentCopy
       }
-      const obj = {
-        years: year,
-        sipStepUp: Math.round(totalSipWithStepUp).toFixed(0),
-        investment: Math.round(totalInvestmentAmount).toFixed(0),
-      }
-      graph.push(obj);
-    };
-    capital = sip - totalInvestmentTillDate;
+      graph.push(
+        {
+          currentYear: year,
+          sipStepUp: Math.round(totalSipWithStepUp),
+          investment: Math.round(totalInvestmentAmount),
+        }
+      )
+    }
     const graphResult = {
       graph,
-      totalInvestmentTillDate,
-      sip,
-      capital,
-    };
-    return graphResult;
-  } catch (error) {
-    return error.message;
-  }
-};
+      totalSipWithStepUp:Math.round(totalSipWithStepUp),
+      totalInvestmentAmount:Math.round(totalInvestmentAmount),
+      capitalGain:Math.round(totalSipWithStepUp-totalInvestmentAmount)
+    }
 
-module.exports = calculateData;
+    console.log(graphResult)
+    return graphResult
+  } catch (error) {
+    throw error
+  }
+}
+
+module.exports = {
+  getStepUpCalculator
+}

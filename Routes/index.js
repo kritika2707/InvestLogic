@@ -1,12 +1,8 @@
-const express = require('express');
-const router = express.Router();
-const controlData = require('../../InvestLogic/Controller/calculator');
+const express = require('express')
+const router = express.Router()
+const { getStepUpCalculator } = require('../Controller/calculator')
 
-router.get("/getResult",controlData);
+router.get("/getSipStepUpCalculator", getStepUpCalculator)
 
                         
-                        
-                        
-                        
-
-module.exports = router;
+module.exports = router

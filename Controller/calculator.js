@@ -1,56 +1,39 @@
+const services = require("../Services/calculator")
+const { constants }  = require("../Constants/validation")
 
-const calculateData = require("../../InvestLogic/Services/calculator");
-const {
-  MONTHLYINVESTMENTMAX,
-  MONTHLYINVESTMENTMIN,
-  INVESTMENTPERIODMIN,
-  INVESTMENTPERIODMAX,
-  RATEOFRETURNMIN,
-  RATEOFRETURNMAX,
-  YEARLYINCREMENTMIN,
-  YEARLYINCREMENTMAX,
-} = require("../../InvestLogic/Constants/validation");
-
-const controlData = async (req, res) => {
+const getStepUpCalculator = async (req, res) => {
   try {
-    
+   let { monthlyInvestment, investmentPeriod, rateOfReturn, yearlyIncrement } = req.query
+    monthlyInvestment = parseInt(monthlyInvestment)
+    investmentPeriod = parseInt(investmentPeriod)
+    rateOfReturn = parseFloat(rateOfReturn)
+    yearlyIncrement = parseInt(yearlyIncrement)
 
-    const monthlyInvestment = parseInt(req.query.monthlyInvestment);
-    const investmentPeriod = parseInt(req.query.investmentPeriod);
-    const rateOfReturn = parseFloat(req.query.rateOfReturn);
-    const yearlyIncrement = parseInt(req.query.yearlyIncrement);
-
-    if ( 
-      monthlyInvestment < MONTHLYINVESTMENTMIN ||
-      monthlyInvestment > MONTHLYINVESTMENTMAX ||
-      investmentPeriod < INVESTMENTPERIODMIN ||
-      investmentPeriod > INVESTMENTPERIODMAX ||
-      rateOfReturn < RATEOFRETURNMIN ||
-      rateOfReturn > RATEOFRETURNMAX ||
-      yearlyIncrement < YEARLYINCREMENTMIN ||
-      yearlyIncrement > YEARLYINCREMENTMAX
-    ) {
-      throw new Error("Invalid Inputs");
-    } else {
-      const result = await calculateData(
-        monthlyInvestment,
-        investmentPeriod,
-        rateOfReturn,
-        yearlyIncrement
-      );
+    if ( monthlyInvestment < constants.MONTHLYINVESTMENTMIN || monthlyInvestment > constants.MONTHLYINVESTMENTMAX )
+      throw "Invalid monthly investment"
+    else if( investmentPeriod < constants.INVESTMENTPERIODMIN || investmentPeriod > constants.INVESTMENTPERIODMAX )
+      throw "Invalid investment period"
+    else if( rateOfReturn < constants.RATEOFRETURNMIN || rateOfReturn > constants.RATEOFRETURNMAX )
+      throw "Invalid rate of return"
+    else if( yearlyIncrement < constants.YEARLYINCREMENTMIN || yearlyIncrement > constants.YEARLYINCREMENTMAX )
+      throw "Invalid yearly increment"
+    else {
+      const result = await services.getStepUpCalculator( {monthlyInvestment, investmentPeriod, rateOfReturn, yearlyIncrement })
       res.send({
         status: 0,
         message: "Request Successful",
-        result: result,
-      });
+        result: result
+      })
     }
   } catch (error) {
     res.send({
       status: -1,
       message: "Invalid inputs",
-      result: error.message,
-    });
+      result: error
+    })
   }
-};
+}
 
-module.exports = controlData;
+module.exports = {
+  getStepUpCalculator
+}
