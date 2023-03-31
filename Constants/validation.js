@@ -1,3 +1,4 @@
+// declaring constant values 
 const constants = {
      MONTHLYINVESTMENTMIN : 500,
      MONTHLYINVESTMENTMAX : 1000000,
@@ -6,6 +7,7 @@ const constants = {
      MONTHSINAYEAR : 12,
      PERCENTAGE : 100
 }
+
 module.exports = {
      constants
 } 
