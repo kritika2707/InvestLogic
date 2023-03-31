@@ -1,4 +1,4 @@
-const { constants } = require('../Constants/validation')
+const { VALIDATION_CONSTANTS } = require('../constants/validation')
 const getStepUpCalculator = async ( { monthlyInvestment, investmentPeriod, rateOfReturn, yearlyIncrement}) => {
   try {
     const graph = [
@@ -9,23 +9,25 @@ const getStepUpCalculator = async ( { monthlyInvestment, investmentPeriod, rateO
         investment:0
       }
     ]
-    let ror = rateOfReturn / (constants.MONTHSINAYEAR * constants.PERCENTAGE)
+    // converting strings into integer/float for further use
+    monthlyInvestment = parseInt(monthlyInvestment)
+    investmentPeriod = parseInt(investmentPeriod)
+    rateOfReturn = parseFloat(rateOfReturn)
+    yearlyIncrement = parseInt(yearlyIncrement)
+    let ror = rateOfReturn / (VALIDATION_CONSTANTS.MONTHS_IN_A_YEAR * VALIDATION_CONSTANTS.PERCENTAGE)
     // for loop for calculating values for every year
     for (let year = 1; year <= investmentPeriod; year++) {
       let monthlyInvestmentCopy = monthlyInvestment;
       var totalSipWithStepUp = 0, cummulationAmount = 0, totalInvestmentAmount = 0
-      let periodInMonth = year * constants.MONTHSINAYEAR
+      let periodInMonth = year * VALIDATION_CONSTANTS.MONTHS_IN_A_YEAR
       // for loop for calculating values till periodInMonth
       for (let month = 1; month <= periodInMonth; month++) {
-        // increment will not be performed for 1st year
-        if (month !== 1) {
-          // increment calculation for next year
-          if (month % constants.MONTHSINAYEAR == 1) {
-            // adding increment to monthly investment in the starting of every year
-            monthlyInvestmentCopy += monthlyInvestmentCopy * (yearlyIncrement / constants.PERCENTAGE)
-          }
+        // increment calculation for next year
+        if (month !== 1 && month % VALIDATION_CONSTANTS.MONTHS_IN_A_YEAR == 1) {
+          // adding increment to monthly investment in the starting of every year
+          monthlyInvestmentCopy += monthlyInvestmentCopy * (yearlyIncrement / VALIDATION_CONSTANTS.PERCENTAGE)
         }
-        // calculating compound interest
+        // calculating compounded amount
         cummulationAmount = monthlyInvestmentCopy * Math.pow(1 + ror, periodInMonth - month + 1)
         // calculating sip growth with yearly increment
         totalSipWithStepUp += cummulationAmount

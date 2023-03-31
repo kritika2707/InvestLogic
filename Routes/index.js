@@ -1,8 +1,10 @@
 const express = require('express')
 const router = express.Router()
-const { getStepUpCalculator } = require('../Controller/calculator')
+const { getStepUpCalculator } = require('../controller/calculator')
 
 // api for sip step up calculator
-router.get("/getSipStepUpCalculator", getStepUpCalculator)
+router.get('/sipStepUpCalculator', getStepUpCalculator)
                         
-module.exports = router
+module.exports = {
+    router
+}

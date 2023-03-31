@@ -1,37 +1,34 @@
-const services = require("../Services/calculator")
-const { constants }  = require("../Constants/validation")
+const services = require('../services/calculator')
+const { VALIDATION_CONSTANTS }  = require('../constants/validation')
 
-const getStepUpCalculator = async (req, res) => {
+const getStepUpCalculator = async (request, response) => {
   try {
-   let { monthlyInvestment, investmentPeriod, rateOfReturn, yearlyIncrement } = req.query
+   let { monthlyInvestment, investmentPeriod, rateOfReturn, yearlyIncrement } = request.query
    // converting strings into integer/float for further use
     monthlyInvestment = parseInt(monthlyInvestment)
     investmentPeriod = parseInt(investmentPeriod)
     rateOfReturn = parseFloat(rateOfReturn)
     yearlyIncrement = parseInt(yearlyIncrement)
     // Validating values getting from frontend
-    if ( monthlyInvestment < constants.MONTHLYINVESTMENTMIN || monthlyInvestment > constants.MONTHLYINVESTMENTMAX )
-      throw "Invalid monthly investment"
-    else if( investmentPeriod < constants.MINIMUMVALUE || investmentPeriod > constants.MAXIMUMVALUE )
-      throw "Invalid investment period"
-    else if( rateOfReturn < constants.MINIMUMVALUE || rateOfReturn > constants.MAXIMUMVALUE )
-      throw "Invalid rate of return"
-    else if( yearlyIncrement < constants.MINIMUMVALUE || yearlyIncrement > constants.MAXIMUMVALUE )
-      throw "Invalid yearly increment"
-    else {
+    if ( monthlyInvestment < VALIDATION_CONSTANTS.MONTHLY_INVESTMENT_MIN || monthlyInvestment > VALIDATION_CONSTANTS.MONTHLY_INVESTMENT_MAX )
+      throw 'Invalid monthly investment'
+    else if( investmentPeriod < VALIDATION_CONSTANTS.MINIMUM_VALUE || investmentPeriod > VALIDATION_CONSTANTS.MAXIMUM_VALUE )
+      throw 'Invalid investment period'
+    else if( rateOfReturn < VALIDATION_CONSTANTS.MINIMUM_VALUE || rateOfReturn > VALIDATION_CONSTANTS.MAXIMUM_VALUE )
+      throw 'Invalid rate of return'
+    else if( yearlyIncrement < VALIDATION_CONSTANTS.MINIMUM_VALUE || yearlyIncrement > VALIDATION_CONSTANTS.MAXIMUM_VALUE )
+      throw 'Invalid yearly increment'
       // getting calculated result from services
-      const result = await services.getStepUpCalculator( {monthlyInvestment, investmentPeriod, rateOfReturn, yearlyIncrement })
-      res.send({
+      const result = await services.getStepUpCalculator(request.query)
+      response.send({
         status: 0,
-        message: "Request Successful",
-        result: result
+        message: 'Request Successful',
+        result
       })
-    }
   } catch (error) {
-    res.send({
+    response.send({
       status: -1,
-      message: error,
-      result: error
+      message: error.message || error
     })
   }
 }

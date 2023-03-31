@@ -1,13 +1,13 @@
 // declaring constant values 
-const constants = {
-     MONTHLYINVESTMENTMIN : 500,
-     MONTHLYINVESTMENTMAX : 1000000,
-     MINIMUMVALUE : 1,
-     MAXIMUMVALUE : 30,
-     MONTHSINAYEAR : 12,
+const VALIDATION_CONSTANTS = {
+     MONTHLY_INVESTMENT_MIN : 500,
+     MONTHLY_INVESTMENT_MAX : 1000000,
+     MINIMUM_VALUE : 1,
+     MAXIMUM_VALUE : 30,
+     MONTHS_IN_A_YEAR : 12,
      PERCENTAGE : 100
 }
 
 module.exports = {
-     constants
+     VALIDATION_CONSTANTS
 } 
